@@ -5,6 +5,18 @@ const OKButton = styled.button`
     font-size: 2vw !important;
 `;
 
+const Copyright = styled.p`
+    position: fixed;
+    bottom: 10px;
+    z-index: 5;
+
+    color: rgb(191, 191, 191);
+
+    > a {
+        color: inherit;
+    }
+`;
+
 const BlurBackground = styled.div`
     width: 100%;
     height: 100%;
@@ -112,6 +124,12 @@ function App() {
             <OKButton className="kbc-button" onClick={handleRun}>
                 Make everything OK
             </OKButton>
+            <Copyright>
+                Copyright{" "}
+                <a href="http://make-everything-ok.com/" target="_blank">
+                    The magic button
+                </a>
+            </Copyright>
             {isRunning ? (
                 <>
                     <BlurBackground />
