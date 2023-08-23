@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { useState, useEffect } from "react";
 
 const OKButton = styled.button`
     font-size: 2vw !important;
@@ -50,6 +51,7 @@ const AnswerModal = styled.div`
     text-align: center;
     padding: 26px 0px 20px 0px;
     color: #fff;
+    box-shadow: 1px 1px 4px #051f00;
 
     > h4 {
         font-size: 32px;
@@ -79,25 +81,62 @@ const AnswerModal = styled.div`
 `;
 
 function App() {
+    const [runInterval, setRunInterval] = useState<number | null>(null);
+    const [isRunning, setRunning] = useState(false);
+    const [isProgressing, setIsProgressing] = useState(false);
+
+    useEffect(() => {
+        if (isProgressing) {
+            setTimeout(() => {
+                setIsProgressing(false);
+            }, 10000);
+        }
+    }, [isProgressing]);
+
+    // 1초 뒤 모달 띄워주기
+    function handleRun() {
+        if (runInterval === null) {
+            setRunInterval(
+                setTimeout(() => {
+                    setRunning(true);
+                    setIsProgressing(true);
+
+                    setRunInterval(null);
+                }, 1000),
+            );
+        }
+    }
+
     return (
         <>
-            <OKButton className="kbc-button">Make everything OK</OKButton>
-            <BlurBackground />
-            <ProgressModal>
-                <p>Making everything OK is in progress</p>
-                <div>
-                    <div></div>
-                </div>
-            </ProgressModal>
-            <AnswerModal>
-                <h4>Everything is OK now</h4>
-                <p>
-                    If everything is still not OK, <br />
-                    try checking your settings of perception <br />
-                    of objective reality.
-                </p>
-                <button>CONTINUE</button>
-            </AnswerModal>
+            <OKButton className="kbc-button" onClick={handleRun}>
+                Make everything OK
+            </OKButton>
+            {isRunning ? (
+                <>
+                    <BlurBackground />
+                    {isProgressing ? (
+                        <ProgressModal>
+                            <p>Making everything OK is in progress</p>
+                            <div>
+                                <div></div>
+                            </div>
+                        </ProgressModal>
+                    ) : (
+                        <AnswerModal>
+                            <h4>Everything is OK now</h4>
+                            <p>
+                                If everything is still not OK, <br />
+                                try checking your settings of perception <br />
+                                of objective reality.
+                            </p>
+                            <button onClick={() => setRunning(false)}>
+                                CONTINUE
+                            </button>
+                        </AnswerModal>
+                    )}
+                </>
+            ) : null}
         </>
     );
 }
