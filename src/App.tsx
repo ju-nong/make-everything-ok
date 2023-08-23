@@ -129,9 +129,6 @@ function App() {
 
     return (
         <>
-            <OKButton className="kbc-button" onClick={handleRun}>
-                Make everything OK
-            </OKButton>
             <Copyright>
                 Copyright{" "}
                 <a href="http://make-everything-ok.com/" target="_blank">
@@ -162,7 +159,11 @@ function App() {
                         </AnswerModal>
                     )}
                 </>
-            ) : null}
+            ) : (
+                <OKButton className="kbc-button" onClick={handleRun}>
+                    Make everything OK
+                </OKButton>
+            )}
         </>
     );
 }
