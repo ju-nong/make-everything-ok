@@ -1,9 +1,30 @@
 import styled from "@emotion/styled";
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 const OKButton = styled.button`
     font-size: 2vw !important;
     user-select: none;
+`;
+
+const LanguageContainer = styled.div`
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    column-gap: 16px;
+    z-index: 4;
+
+    > button {
+        padding: 4px 4px;
+        background-color: transparent;
+        color: #a8a8a8;
+        cursor: pointer;
+
+        &.active {
+            font-weight: bold;
+        }
+    }
 `;
 
 const Copyright = styled.p`
@@ -79,6 +100,7 @@ const AnswerModal = styled.div`
         font-size: 18px;
         line-height: 1.2em;
         margin-bottom: 15px;
+        white-space: pre-line;
     }
 
     > button {
@@ -105,6 +127,15 @@ function App() {
     const [isRunning, setRunning] = useState(false);
     const [isProgressing, setIsProgressing] = useState(false);
 
+    const { t, i18n } = useTranslation();
+    const [lang, setLang] = useState(i18n.language);
+    const langs = ["en", "ko"];
+
+    function handleChangeLanguage(language: string) {
+        setLang(language);
+        i18n.changeLanguage(language);
+    }
+
     useEffect(() => {
         if (isProgressing) {
             setTimeout(() => {
@@ -129,41 +160,50 @@ function App() {
 
     return (
         <>
-            <Copyright>
-                Copyright{" "}
-                <a href="http://make-everything-ok.com/" target="_blank">
-                    The magic button
-                </a>
-            </Copyright>
             {isRunning ? (
                 <>
                     <BlurBackground />
                     {isProgressing ? (
                         <ProgressModal>
-                            <p>Making everything OK is in progress</p>
+                            <p>{t("progressText")}</p>
                             <div>
                                 <div></div>
                             </div>
                         </ProgressModal>
                     ) : (
                         <AnswerModal>
-                            <h4>Everything is OK now</h4>
-                            <p>
-                                If everything is still not OK, <br />
-                                try checking your settings of perception <br />
-                                of objective reality.
-                            </p>
+                            <h4>{t("answerTitle")}</h4>
+                            <p>{t("answerText")}</p>
                             <button onClick={() => setRunning(false)}>
-                                CONTINUE
+                                {t("answerButtonText")}
                             </button>
                         </AnswerModal>
                     )}
                 </>
             ) : (
                 <OKButton className="kbc-button" onClick={handleRun}>
-                    Make everything OK
+                    {t("okButtonText")}
                 </OKButton>
             )}
+
+            <LanguageContainer>
+                {langs.map((item) => (
+                    <button
+                        key={item}
+                        className={item === lang ? "active" : ""}
+                        onClick={() => handleChangeLanguage(item)}
+                    >
+                        {item}
+                    </button>
+                ))}
+            </LanguageContainer>
+
+            <Copyright>
+                Copyright{" "}
+                <a href="http://make-everything-ok.com/" target="_blank">
+                    The magic button
+                </a>
+            </Copyright>
         </>
     );
 }
