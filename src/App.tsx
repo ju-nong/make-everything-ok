@@ -3,13 +3,13 @@ import { useState, useEffect } from "react";
 
 const OKButton = styled.button`
     font-size: 2vw !important;
+    user-select: none;
 `;
 
 const Copyright = styled.p`
     position: fixed;
     bottom: 10px;
     z-index: 5;
-
     color: rgb(191, 191, 191);
 
     > a {
@@ -51,6 +51,10 @@ const ProgressModal = styled.div`
             animation: progress-bar 10s ease-in;
         }
     }
+
+    @media screen and (max-width: 460px) {
+        transform: scale(0.5);
+    }
 `;
 
 const AnswerModal = styled.div`
@@ -89,6 +93,10 @@ const AnswerModal = styled.div`
         &:hover {
             background-color: rgba(255, 255, 255, 1);
         }
+    }
+
+    @media screen and (max-width: 460px) {
+        transform: scale(0.5);
     }
 `;
 
